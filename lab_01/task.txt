@@ -1,0 +1,14 @@
+psql -h localhost -U postgres -d postgres -f create_tables.sql
+psql -h localhost -U postgres -d postgres -f constraints.sql
+psql -h localhost -U postgres -d postgres -f bulk_insert.sql
+
+
+
+/home/rudy/Downloads/postgresql-16.3/bin/pg_ctl -D ./data start
+/home/rudy/Downloads/postgresql-16.3/bin/psql -U postgres -d /home/rudy/db/lab_01/data 
+ls
+export PGDATA=/home/rudy/db/lab_01/data
+/home/rudy/Downloads/postgresql-16.3/bin/psql -U postgres
+sudo systemctl status postgresql
+sudo systemctl disable postgresql
+sudo systemctl stop postgresql

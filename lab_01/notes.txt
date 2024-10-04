@@ -1,0 +1,64 @@
+TODO:
+1. перерисовать схему таблиц в ромбики)
+2. навесить ограничения помимо fk
+
+docker run --name my_postgres -p 5432:5432 -e POSTGRES_PASSWORD=password
+
+# sql скрипты создания таблиц
+psql -h localhost -U postgres -d postgres -f create_tables.sql
+
+# навешивания ограничений
+psql -h localhost -U postgres -d postgres -f constraints.sql
+
+# загрузки данных из csv
+psql -h localhost -U postgres -d postgres -f bulk_insert.sql
+
+# удалить все таблицы
+psql -h localhost -U postgres -d postgres -f drop_all.sql
+
+
+Список ограничений:
+
+BASE
+	baseID
+	adress
+	base_name
+	manager
+	contact
+
+EQU
+	equID
+	baseID
+	type
+	manufacturer
+	cntAll
+	cntInUse
+
+TASK
+	taskID
+	baseID
+	taskName
+	dateStart
+	duration
+
+EMP
+	empID
+	firstName
+	lastName
+	studyGroup		- регулярка? [a-z](1-3)+[0-9](1-2)+"-"+[1-13]+[Б]?
+	phoneNumber
+	position		- выбор из трех ['TechSenior', 'TechJunior', 'NotTech']
+
+EMP_TASK
+	emptaaskID
+	empID
+	taskID
+	ifLeader
+
+EQU_TASK
+	eqtaskID
+	taskID
+	equID
+	cntInUse		- cntIn
+
+
