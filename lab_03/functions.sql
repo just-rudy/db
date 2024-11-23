@@ -60,7 +60,7 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM get_tasks_with_duration_hours(3007);
 
--- Рекурсивная функция
+-- TODO: Рекурсивная функция
 
 CREATE OR REPLACE FUNCTION get_employee_hierarchy(employee_id INT)
 RETURNS TABLE (
