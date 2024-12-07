@@ -1,16 +1,24 @@
 --TODO Извлечь данные в JSON
 
+CREATE TABLE IF NOT EXISTS JSONdata (
+    jId SERIAL PRIMARY KEY,
+    jdata JSONB
+);
+
+
 CREATE TABLE IF NOT EXISTS Employees (
-    employeeId SERIAL PRIMARY KEY,
-    firstName TEXT,
-    lastName TEXT,
-    studyGroup TEXT,
-    phoneNumber TEXT,
-    position TEXT
+employeeId SERIAL PRIMARY KEY,
+firstName TEXT,
+lastName TEXT,
+studyGroup TEXT,
+phoneNumber TEXT,
+position TEXT
 );
 
 SELECT row_to_json(employees)
 FROM Employees;
+
+drop table jsondata;
 
 INSERT INTO jsondata (jdata)
 SELECT row_to_json(employees)
@@ -23,8 +31,11 @@ from jsondata;
 
 --TODO Выполнить загрузку и сохранение JSON файла в таблицу.
 
+-- run python script to_json
+
 DELETE
 FROM Employees;
+
 SELECT *
 FROM Employees;
 
@@ -88,38 +99,52 @@ SET data = row_to_json(employees);
 SELECT *
 FROM employees;
 
+-- run python script fill_json
+
 -- 1. Извлечь XML/JSON фрагмент из XML/JSON документа
 SELECT data->'dog' AS dog_info_frag
 FROM Employees
-WHERE employeeId = 1;
+WHERE employeeId = 97
+;
+
+SELECT data->'dog' AS dog_info_frag
+FROM Employees
+WHERE employeeId = 97
+;
+
+
+SELECT pg_typeof(data->'dog') AS dog_info_frag
+FROM Employees
+WHERE employeeId = 97
+;
 
 
 -- 2. Извлечь значения конкретных узлов или атрибутов XML/JSON документа
 SELECT data->'dog'->>'breed' AS dog
-FROM Employees;
--- WHERE employeeId = 1;
+FROM Employees
+-- WHERE employeeId = 97
+;
 
 
 -- 3. Выполнить проверку существования узла или атрибута
 
 SELECT data ? 'dog'
 FROM Employees
-WHERE employeeId = 10;
+-- WHERE employeeId = 97
+;
 
 
 -- 4. Изменить XML/JSON документ
 UPDATE Employees
-SET data = jsonb_set(data::jsonb, '{address,city}', '"New City"')
-WHERE employeeId = 1;
+SET data = jsonb_set(data::jsonb, '{address,city}', '"STUPINO"')
+WHERE employeeId = 97
+;
 
 
 -- 5. Разделить XML/JSON документ на несколько строк по узлам
 SELECT
     employeeId,
     firstName,
-    lastName,
-    studyGroup,
-    phoneNumber,
     position,
     key AS json_key,
     value AS json_value

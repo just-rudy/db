@@ -2,8 +2,6 @@ TODO:
 1. перерисовать схему таблиц в ромбики)
 2. навесить ограничения помимо fk
 
-docker run --name my_postgres -p 5432:5432 -e POSTGRES_PASSWORD=password
-
 # sql скрипты создания таблиц
 psql -h localhost -U postgres -d postgres -f create_tables.sql
 

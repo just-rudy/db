@@ -1,5 +1,7 @@
 -- Скалярная функция, получить имя и фамилию работника по его EmployeeID
 
+SELECT * FROM employees;
+
 CREATE OR REPLACE FUNCTION get_full_name(employee_id INT)
 RETURNS TEXT AS $$
 BEGIN
@@ -11,7 +13,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT get_full_name(3034);
+SELECT get_full_name(1);
+
 -- Подставляемая табличная функция
 CREATE OR REPLACE FUNCTION get_equipment_by_base(base_id INT)
 RETURNS TABLE (
@@ -34,7 +37,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM get_equipment_by_base(3001);
+SELECT * FROM get_equipment_by_base(1);
 
 DROP FUNCTION get_tasks_with_duration_hours(base_id int);
 
@@ -58,7 +61,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-SELECT * FROM get_tasks_with_duration_hours(3007);
+SELECT * FROM get_tasks_with_duration_hours(1);
 
 -- TODO: Рекурсивная функция
 

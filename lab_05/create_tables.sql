@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS Employees (
     position TEXT
 );
 
+DELETE FROM Employees;
+
 CREATE TABLE IF NOT EXISTS Equipment (
     equipmentId SERIAL PRIMARY KEY,
     type TEXT,
@@ -40,6 +42,8 @@ CREATE TABLE IF NOT EXISTS EmployeeTask (
     taskId INT
 );
 
+DELETE FROM EmployeeTask;
+
 CREATE TABLE IF NOT EXISTS EquipmentTask (
     eqTaskId SERIAL PRIMARY KEY,
     cntUsed INT,
@@ -47,3 +51,10 @@ CREATE TABLE IF NOT EXISTS EquipmentTask (
     taskId INT
     
 );
+
+CREATE TABLE IF NOT EXISTS JSONdata (
+    jId SERIAL PRIMARY KEY,
+    jdata JSONB
+);
+
+drop table jsondata;

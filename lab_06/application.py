@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2 import sql
 from faker import Faker
 import random
 from gen_specific_data import persons, rand_study_group, eq_piece, positions
@@ -14,9 +15,31 @@ conn = psycopg2.connect(
 )
 
 
+# Проверить существование таблицы
+def check_table_exists(table_name, connection):
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT EXISTS (
+            SELECT 1 
+            FROM information_schema.tables 
+            WHERE table_schema = 'public' 
+            AND table_name = %s
+        );
+    """, (table_name,))
+    exists = cursor.fetchone()[0]
+    cursor.close()
+    return exists
+
+
 # 1. Выполнить скалярный запрос;
 
 def scalar_query(conn):
+
+    db_name = 'employees'
+    if not check_table_exists(db_name, conn):
+        print(f"База данных {db_name} не существует.")
+        return
+
     cur = conn.cursor()
     cur.execute("""
         SELECT COUNT(*) FROM Employees
@@ -29,6 +52,11 @@ def scalar_query(conn):
 # 2. Выполнить запрос с несколькими соединениями (JOIN);
 
 def join_query(conn):
+
+    db_name = 'employees'
+    if not (check_table_exists('employees', conn) and check_table_exists('employeetask', conn) and check_table_exists('tasks', conn)):
+        print(f"База данных {db_name} не существует.")
+        return
     cur = conn.cursor()
     cur.execute("""SELECT E.employeeid, E.FirstName, E.LastName, E.Position, T.taskName, ET.ifLeader
         FROM Employees E
@@ -43,6 +71,11 @@ def join_query(conn):
 # TODO: 3. Выполнить запрос с ОТВ(CTE) и оконными функциями;
 
 def cte_and_window_function_query(connection):
+
+    db_name = 'employees'
+    if not check_table_exists(db_name, connection):
+        print(f"База данных {db_name} не существует.")
+        return
     cursor = connection.cursor()
     cursor.execute("""
         WITH CTE AS (
@@ -128,18 +161,27 @@ def create_table(connection):
 # 10. Выполнить вставку данных в созданную таблицу с использованием инструкции INSERT или COPY.
 
 def insert_into_table(connection):
+    db_name = 'skill_listing'
+    if not check_table_exists(db_name, connection):
+        print(f"База данных {db_name} не существует.")
+        return
+
     cursor = connection.cursor()
     cursor.execute("INSERT INTO skill_listing (employeeID, toolID) VALUES (%s, %s)", (1, 1))
     cursor.execute("INSERT INTO skill_listing (employeeID, toolID) VALUES (%s, %s)", (1, 2))
     cursor.execute("INSERT INTO skill_listing (employeeID, toolID) VALUES (%s, %s)", (1, 3))
     cursor.execute("INSERT INTO skill_listing (employeeID, toolID) VALUES (%s, %s)", (1, 4))
     cursor.execute("INSERT INTO skill_listing (employeeID, toolID) VALUES (%s, %s)", (1, 5))
+    print("Данные вставлены в таблицу.")
     connection.commit()
     cursor.close()
-    print("Данные вставлены в таблицу.")
 
 
 def select_all_emp(connection):
+    db_name = 'employees'
+    if not check_table_exists(db_name, connection):
+        print(f"База данных {db_name} не существует.")
+        return
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM Employees")
     result = cursor.fetchall()
@@ -149,6 +191,11 @@ def select_all_emp(connection):
 
 
 def select_all_skill(connection):
+    db_name = 'skill_listing'
+    if not check_table_exists(db_name, connection):
+        print(f"База данных {db_name} не существует.")
+        return
+
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM SKILL_LISTING")
     result = cursor.fetchall()
@@ -207,3 +254,4 @@ while com != 0:
     else:
         print("Неверный ввод, повторите")
     com = int(input(": "))
+conn.close()

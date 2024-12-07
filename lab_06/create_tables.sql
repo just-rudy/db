@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS Bases (
     contact TEXT
 );
 
-CREATE TABLE IF NOT EXISTS Employees (
+CREATE TABLE IF NOT EXISTS
+    Employees (
     employeeId SERIAL PRIMARY KEY,
     firstName TEXT,
     lastName TEXT,

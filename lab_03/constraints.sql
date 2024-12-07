@@ -22,4 +22,4 @@ ALTER TABLE EmployeeTask ADD CONSTRAINT fk_emptask_task FOREIGN KEY (taskId) REF
 ALTER TABLE EquipmentTask ADD CONSTRAINT fk_equtask_equ FOREIGN KEY (equipmentId) REFERENCES Equipment(equipmentId);
 ALTER TABLE EquipmentTask ADD CONSTRAINT fk_equtask_task FOREIGN KEY (taskId) REFERENCES Tasks(taskId);
 
-# триггер на проверку что cntequ < EQU.cntAll - EQU.cntInUse
+-- # триггер на проверку что cntequ < EQU.cntAll - EQU.cntInUse
