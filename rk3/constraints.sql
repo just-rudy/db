@@ -1,10 +1,12 @@
-# Employees
+-- satellite
 
-# Exchanges
-ALTER TABLE Exchanges ADD CONSTRAINT fk_exch_emp FOREIGN KEY (empID) REFERENCES Employees(empID);
-ALTER TABLE Exchanges ADD CONSTRAINT fk_exch_cur FOREIGN KEY (rateID) REFERENCES CurrencyRates(rateID);
 
-# CurrencyRates
-ALTER TABLE CurrencyRates ADD CONSTRAINT fk_rate_type FOREIGN KEY (currTypeID) REFERENCES CurrencyTypes(currTypeID);
-
-# CurrencyTypes
+-- flight
+ALTER TABLE flight
+    ADD CONSTRAINT fl_fk FOREIGN KEY (satID) REFERENCES satellite (id);
+ALTER TABLE flight
+    ADD CONSTRAINT check_01 CHECK (type IN (0, 1));
+ALTER TABLE flight
+    ADD CONSTRAINT check_weekday CHECK (flight.weekday IN
+                                        ('Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота',
+                                         'Воскресенье'));
